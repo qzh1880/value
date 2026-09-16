@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据榜 | Jincai League</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, sans-serif;}
+        body{background:#f5f7fa;padding:30px 15px;max-width:800px;margin:0 auto;}
+        .back{display:inline-block;margin-bottom:16px;color:#7b2cbf;text-decoration:none;}
+        .tab-box{display:flex;gap:8px;margin-bottom:24px;flex-wrap: wrap;}
+        .tab{padding:10px 20px;background:#ddd;border-radius:8px;cursor:pointer;}
+        .tab.active{background:#7b2cbf;color:#fff;}
+        .tab-content{display:none;}
+        .tab-content.show{display:block;}
+        h1{text-align:center;color:#222;margin-bottom:24px;font-size:26px;}
+        .rank-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px #00000010;}
+        .rank-header{display:grid;grid-template-columns:60px 1fr 160px;padding:14px 20px;background:#2c3e50;color:#fff;font-weight:bold;}
+        .rank-item{display:grid;grid-template-columns:60px 1fr 160px;padding:16px 20px;border-bottom:1px solid #eee;align-items:center;}
+        .rank-item.top1{background:#fff9e6;}
+        .rank-item.top2{background:#f2f4f6;}
+        .rank-item.top3{background:#fff2e8;}
+        .rank-num{font-weight:bold;font-size:18px;}
+        .rank-name{font-size:17px;color:#222;}
+        .rank-desc{font-size:13px;color:#666;margin-top:4px;}
+        .rank-score{text-align:center;font-weight:bold;color:#34495e;font-size:17px;}
+        .rank-header div:last-child{text-align:center;}
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back">← 返回首页</a>
+    <div class="tab-box">
+        <div class="tab active" data-tab="shoot">射手榜</div>
+        <div class="tab" data-tab="assist">助攻榜</div>
+        <div class="tab" data-tab="save">扑救榜</div>
+    </div>
+    <div class="tab-content show" id="shoot">
+        <h1>射手榜</h1>
+        <div class="rank-card">
+            <div class="rank-header">
+                <div>名次</div>
+                <div>球员（球队）</div>
+                <div>进球</div>
+            </div>
+            <div id="shootWrap"></div>
+        </div>
+    </div>
+    <div class="tab-content" id="assist">
+        <h1>助攻榜</h1>
+        <div class="rank-card">
+            <div class="rank-header">
+                <div>名次</div>
+                <div>球员（球队）</div>
+                <div>助攻</div>
+            </div>
+            <div id="assistWrap"></div>
+        </div>
+    </div>
+    <div class="tab-content" id="save">
+        <h1>扑救榜</h1>
+        <div class="rank-card">
+            <div class="rank-header">
+                <div>名次</div>
+                <div>球员（球队）</div>
+                <div>扑救</div>
+            </div>
+            <div id="saveWrap"></div>
+        </div>
+    </div>
+<script>
+const tabs = document.querySelectorAll('.tab');
+tabs.forEach(t=>{
+    t.onclick = ()=>{
+        tabs.forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('show'));
+        document.getElementById(t.dataset.tab).classList.add('show');
+    }
+})
+// 射手数据，自行修改
+const shootData = [
+    {name:"陈润东", desc:"7尔西", score:2},
+    {name:"徐文博", desc:"7尔西", score:1},
+];
+const sortedShoot = shootData.sort((a,b)=>b.score - a.score);
+const sWrap = document.getElementById("shootWrap");
+sortedShoot.forEach((item, index)=>{
+    const rank = index + 1;
+    const div = document.createElement("div");
+    div.className = "rank-item";
+    if(rank ===1) div.classList.add("top1");
+    if(rank ===2) div.classList.add("top2");
+    if(rank ===3) div.classList.add("top3");
+    div.innerHTML = `
+        <div class="rank-num">${rank}</div>
+        <div>
+            <div class="rank-name">${item.name}</div>
+            <div class="rank-desc">${item.desc}</div>
+        </div>
+        <div class="rank-score">${item.score}</div>
+    `;
+    sWrap.appendChild(div);
+})
+// 助攻数据，自行修改
+const assistData = [
+    {name:"李胥霖", desc:"7尔西", score:2},
+    {name:"梅一涵", desc:"7尔西", score:1},
+];
+const sortedAssist = assistData.sort((a,b)=>b.score - a.score);
+const aWrap = document.getElementById("assistWrap");
+sortedAssist.forEach((item, index)=>{
+    const rank = index + 1;
+    const div = document.createElement("div");
+    div.className = "rank-item";
+    if(rank ===1) div.classList.add("top1");
+    if(rank ===2) div.classList.add("top2");
+    if(rank ===3) div.classList.add("top3");
+    div.innerHTML = `
+        <div class="rank-num">${rank}</div>
+        <div>
+            <div class="rank-name">${item.name}</div>
+            <div class="rank-desc">${item.desc}</div>
+        </div>
+        <div class="rank-score">${item.score}</div>
+    `;
+    aWrap.appendChild(div);
+})
+// ========== 新增扑救数据在这里修改 ==========
+const saveData = [
+    {name:"邹奕涵", desc:"上海曼巴", score:2},
+    {name:"赵弘毅", desc:"上海曼巴", score:1},
+];
+const sortedSave = saveData.sort((a,b)=>b.score - a.score);
+const saveWrap = document.getElementById("saveWrap");
+sortedSave.forEach((item, index)=>{
+    const rank = index + 1;
+    const div = document.createElement("div");
+    div.className = "rank-item";
+    if(rank ===1) div.classList.add("top1");
+    if(rank ===2) div.classList.add("top2");
+    if(rank ===3) div.classList.add("top3");
+    div.innerHTML = `
+        <div class="rank-num">${rank}</div>
+        <div>
+            <div class="rank-name">${item.name}</div>
+            <div class="rank-desc">${item.desc}</div>
+        </div>
+        <div class="rank-score">${item.score}</div>
+    `;
+    saveWrap.appendChild(div);
+})
+</script>
+</body>
+</html>
